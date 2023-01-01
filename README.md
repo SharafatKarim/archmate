@@ -13,12 +13,18 @@ A simple, lightweight, user-friendly tool for managing and configuring Arch Linu
 
 ## Installation
 
-If you install it, the script will be placed to your home directory and an entry to your `.bashrc`. So that you can access it from anywhere in your system, just by running `amate`!
+> If you install it, the script will be placed to your home directory and an entry to your `.bashrc`. So that you can access it from anywhere in your system, just by running `amate`!
 
 To install, simply run,
 ```
 curl -s https://raw.githubusercontent.com/SharafatKarim/archmate/main/install.bash | bash
 ```
+
+> If you're using both `bash` and `zsh` then, while Installation it'll ask you to set one. You can set bash to import the alias in bashrc and later in the `.zshrc` you can source your `.bashrc` in this way, ```
+> source ~/.bashrc
+> ```
+
+If you want to uninstall, then run the script and from `Troubleshooting` section, select `Uninstall this script (if installed)`.
 
 ## Run Locally
 
@@ -75,6 +81,6 @@ It's lightweight, no third party modules, and you can understand easily with jus
 
 ## Acknowledgements
 
-All thanks to [Md. Redwan Hossain](https://github.com/redwan-hossain/) for inspiring me and his tool to easily use pacman package manger, [lazypac](https://github.com/redwan-hossain/lazypac)
+All thanks to [Md. Redwan Hossain](https://github.com/redwan-hossain/) for inspiring me. His tool to easily use pacman package manger, [lazypac](https://github.com/redwan-hossain/lazypac) really inspired me and gave a lot of ideas!
 
 
