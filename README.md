@@ -20,8 +20,6 @@ To install, simply run,
 curl -s https://raw.githubusercontent.com/SharafatKarim/archmate/main/install.bash | bash
 ```
 
-> If you're using both `bash` and `zsh` then, while Installation it'll ask you to set one. You can set bash to import the alias in bashrc and later in the `.zshrc` you can source your `.bashrc` in this way, ```source ~/.bashrc``` in your `.zshcrc` or vice versa!
-
 If you want to uninstall, then run the script and from `Troubleshooting` section, select `Uninstall this script (if installed)`.
 
 ## Run Locally
@@ -71,6 +69,16 @@ Some features are,
 
 ## Contribution
 It's lightweight, no third party modules, and you can understand easily with just basic python knowledge! Feel free to send me merge request or, directory knock me!
+
+## Troubleshooting
+
+### Both `.bashrc` and `.zshrc` exists?
+
+If you're using both `bash` and `zsh` then, while Installation it'll ask you to set one (bash or zsh). You can set bash to import the alias in `bashrc` and later in the `.zshrc` you can source your `.bashrc` from your `.zshcrc` in this way,
+```
+source ~/.bashrc
+```
+or vice versa!
 
 ## License
 
