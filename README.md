@@ -20,9 +20,7 @@ To install, simply run,
 curl -s https://raw.githubusercontent.com/SharafatKarim/archmate/main/install.bash | bash
 ```
 
-> If you're using both `bash` and `zsh` then, while Installation it'll ask you to set one. You can set bash to import the alias in bashrc and later in the `.zshrc` you can source your `.bashrc` in this way, ```
-> source ~/.bashrc
-> ```
+> If you're using both `bash` and `zsh` then, while Installation it'll ask you to set one. You can set bash to import the alias in bashrc and later in the `.zshrc` you can source your `.bashrc` in this way, ```source ~/.bashrc``` in your `.zshcrc` or vice versa!
 
 If you want to uninstall, then run the script and from `Troubleshooting` section, select `Uninstall this script (if installed)`.
 
