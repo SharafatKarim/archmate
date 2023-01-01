@@ -6,14 +6,122 @@
 
 # TODO LIST
 # 1) make a function for input error check
-# 2) check if a update is needed using a VERSION file in the repository
+# 2) make the update function work
+# 3) adjust the \n at the end between menu
+
 
 import os
+import re # regular expressions
 from time import sleep #FIXME unusual
 
+# Version file location in the repository
+#FIXME: use Sharafat repo instead mine
+__URL_VERSION__ = "https://raw.githubusercontent.com/Pasqualecoder/archmate/main/VERSION" 
 __CURRENT_VERSION__ = "1.0"
 
 
+
+# Feel free to delete me. I'm not really useful
+def cowsay(message):
+    lines = message.split('\n')
+    width = max(len(line) for line in lines)
+    cow = r'''
+         \   ^__^
+          \  (oo)\_______
+             (__)\       )\/\
+                 ||----w |
+                 ||     ||
+    '''
+    result = []
+    result.append(' ' + '_' * width)
+    for line in lines:
+        result.append('< ' + line.ljust(width) + ' >')
+    result.append(' ' + '-' * width)
+    result.append(cow)
+    return '\n'.join(result)
+# -----------------------------------
+
+
+
+# -------------------------- UPDATE MODULE -----------------------------------
+
+# Compares version numbers
+# for example: 1.1 and 2.4
+def compare_versions(version1, version2):
+    components1 = version1.split('.')
+    components2 = version2.split('.')
+
+    for i in range(min(len(components1), len(components2))):
+        if int(components1[i]) < int(components2[i]):
+            return -1
+        elif int(components1[i]) > int(components2[i]):
+            return 1
+
+    if len(components1) < len(components2):
+        return -1
+    elif len(components1) > len(components2):
+        return 1
+    else:
+        return 0
+
+
+# Makes an HTTP request to the __URL_VERSION__ (the VERSION file in the repository) and return its content
+def fetch_newer_version():
+    import urllib.request
+    with urllib.request.urlopen(__URL_VERSION__) as response:
+        status = int(response.status)
+        if status == 200:
+            fetched_version = response.read()
+            # CLEANUP the string
+            fetched_version = fetched_version.decode('utf-8')
+            return fetched_version
+        else:
+            return -1
+
+
+# Effectly downloads the script from repository
+def run_update():
+    #FIXME: test me out. Not sure of how I work
+    #if os.getcwd() == os.getenv("HOME"):
+    #    os.system('curl -s --output "$PWD/amate.py" "https://raw.githubusercontent.com/SharafatKarim/archmate/main/amate.py"')
+    print("Update finished. Restart the app. (NOT REALLY YET)")
+
+
+# Shows the current version, grabs from the web the new version, then choose if run the update or no
+def update_amate():
+    print(f"Current version: {__CURRENT_VERSION__}")
+    fetched_version = fetch_newer_version()
+    if fetched_version == -1:
+        print(f"Can't fetch the version from the server! (Probably a network error) {__URL_VERSION__}")
+    else:
+        print(f"Fetched version: {fetched_version}")
+
+        comparisone_result = compare_versions(__CURRENT_VERSION__, fetched_version)
+
+        # currently is older
+        if comparisone_result == -1:
+            run_update()
+            exit()
+            
+        # currently is newer (WEIRD CASE)
+        elif comparisone_result == 1:
+            print("Ops... This is kinda weird. You are currently running a newer version of Arch Mate. Probably you made some changes to the program")
+            print("The update is up to you. You will lose the changes you have done")
+            print("Are you sure you want to download the version from the repository?")
+            response = input("(y/N)>")
+            if response.lower() in ['y', 'yes', 'YES', 'Yes']:
+                run_update()
+                exit()
+
+        # currently is up-to-date'
+        elif comparisone_result == 0:
+            print("You are already up-to-date")
+            print("There is nothing to do")
+
+# ----------------------------------------------------------------------------
+
+
+# -------------------------- CATEGORIES --------------------------------------
 
 def setup_and_update():
     menu_name = "Setup and Updates"
@@ -107,15 +215,6 @@ def information_center():
             print()
 
 
-
-
-
-def update_amate():
-    print()
-
-    
-
-
 categories = [
     ["Setup and Updates", setup_and_update],
     #["Mirror and Repository Management", mirror_and_repository_management],
@@ -128,15 +227,12 @@ categories = [
     ["Update Arch Mate", update_amate]
 ]
 
-
-
+# ----------------------------------------------------------------------------
 
 
 def welcome_screen():
-    print("""
-    Welcome to ArchMate!
-    It'll help you to configure and manage
-    your system easily and efficiently!\n""")
+    message = "Welcome to ArchMate!\nIt'll help you to configure and manage\nyour system easily and efficiently!"
+    print(cowsay(message))
     
 
 def primary_menu():
@@ -153,10 +249,9 @@ def primary_menu():
 
     # Close the program
 
-'''
-Prints the menu name and its choices
-then asks for the user input and returns it.
-'''
+
+# Prints the menu name and its choices
+# then asks for the user input and returns it.
 def prompt_menu(menu_name, choices_list):
     # You cant go any backwards of main menu
     back_choice = ""
@@ -165,7 +260,7 @@ def prompt_menu(menu_name, choices_list):
     else:
         back_choice = "Back"
     
-    #Printing choices
+    # printing choices
     print(menu_name)
     print("------")
     for i in range(len(choices_list)):
@@ -173,17 +268,12 @@ def prompt_menu(menu_name, choices_list):
     print("------")
     print(f"0) {back_choice}\n")
 
-    #asking for input and reduce of 1 because of natural counting
+    # asking for input and reduce of 1 because of natural counting
     choice = int(input("Your Choice -> "))
     return choice-1
 
 
-
-
 if __name__ == "__main__":
     welcome_screen()
-    while True:
-        primary_menu()
-        break
-
+    primary_menu()
 
