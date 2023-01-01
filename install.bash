@@ -36,13 +36,22 @@ echo -e "Please restart your terminal,"
 echo -e "and run, ${Green}amate${NC}"
 }
 
+zsh_tips()
+{
+echo ""
+echo "If zsh is your default shell then don't forget to source your .bashrc!"
+echo "You can source from .bashrc using bashrc automatically,"
+echo "For this append this line to your .zshrc"
+echo -e "${Green}source ~/.bashrc${NC}"
+}
+
 both_bash_zsh()
 {
 echo ""
 while true; do
     read -p "Where do you want to set alias?(Bash or zsh) " bz
     case $bz in
-        [Bb]* ) bashrc_alias; exit;;
+        [Bb]* ) bashrc_alias; zsh_tips;exit;;
         [Zz]* ) zshrc_alias; exit;;
         * ) echo -e "Please answer bash or zsh. Or, b or z is fine!";;
     esac

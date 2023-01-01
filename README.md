@@ -50,7 +50,7 @@ Then execute with,
 ## Support
 
 For support, feel free to text me,
-- [Sharafat Karim | contacts](https://sharafat.pages.dev/about/)
+- [Sharafat Karim | Contacts](https://sharafat.pages.dev/about/)
 
 
 ## Features
