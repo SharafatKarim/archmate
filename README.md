@@ -18,7 +18,7 @@ A simple, lightweight, user-friendly tool for managing and configuring Arch Linu
 To install, simply run,
 
 ```
-wget -O installer.bash https://raw.githubusercontent.com/SharafatKarim/archmate/main/install.bash && bash installer.bash && rm installer.bash
+curl -s https://raw.githubusercontent.com/SharafatKarim/archmate/main/install.bash > installer.bash && bash installer.bash && rm installer.bash
 ```
 
 If you want to uninstall, then run the script and from `Troubleshooting` section, select `Uninstall this script (if installed)`.

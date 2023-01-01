@@ -6,7 +6,7 @@ NC='\033[0m'              # No Color
 
 install_script()
 {
-    curl https://raw.githubusercontent.com/SharafatKarim/archmate/main/amate.py > ~/amate.py
+    curl -s https://raw.githubusercontent.com/SharafatKarim/archmate/main/amate.py > ~/amate.py
 }
 
 ask_to_set_manually()
