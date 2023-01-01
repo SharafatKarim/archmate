@@ -1,7 +1,7 @@
 
 # Arch Mate
 
-A simple, user-friendly tool for managing and configuring Arch Linux systems, written with python.
+A simple, lightweight, user-friendly tool for managing and configuring Arch Linux systems, written with python.
 
 > If it's installed just run 'amate' in your terminal to access!
 
@@ -31,6 +31,8 @@ Go to the project directory
 
 Make sure python is installed. For most systems it comes out of the box.
 
+> `python-pip` or any third party modules not required! We also love as minimal as possible!
+
 Then execute with,
 
 ```bash
@@ -49,7 +51,7 @@ For support, feel free to text me,
 You'll easily understand if you open the script. Besides this script can be updated from inside(if you are inside home directory)!
 
 Some features are,
-- Setup and Updates - basic packages, system's base and this script updating tool.
+- Setup and Updates - basic packages, system's base and fonts updating tool.
 - Mirror and Repository Management - easily use reflector and install chaotic AUR and pacman configs.
 - Package Management - List, install or manager your pacman database.
 - System Cleanups - Orphans, cache and other cleanups.
@@ -58,6 +60,8 @@ Some features are,
 - Information Center - learn about your system!
 - Troubleshooting - this script uninstaller and other quick fixes.
 
+## Contribution
+It's lightweight, no third party modules, and you can understand easily with just basic python knowledge! Feel free to send me merge request or, directory knock me!
 
 ## License
 

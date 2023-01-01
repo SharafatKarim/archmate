@@ -493,7 +493,7 @@ def setup_and_updates():
 def autoupdate_hook():
     from filecmp import cmp
     if os.getcwd() == os.getenv("HOME"):
-        os.system('curl -s --output "$PWD/amate_updated.py" "https://raw.githubusercontent.com/redwan-hossain/amate/main/amate.py"')
+        os.system('curl -s --output "$PWD/amate_updated.py" "https://raw.githubusercontent.com/SharafatKarim/archmate/main/amate.py"')
         if not cmp("amate.py", "amate_updated.py"):
             os.system("mv amate_updated.py amate.py")
             print("Script has been updated!")
@@ -501,7 +501,11 @@ def autoupdate_hook():
             os.system("rm amate_updated.py")
 
 def show_main_menu():
-    print("""
+    if os.getcwd() == os.getenv("HOME"):
+        update = "Update and Exit"
+    else:
+        update = "Exit"
+    print(f"""
         Main Menu
         ------
         1) Setup and Updates
@@ -513,7 +517,7 @@ def show_main_menu():
         7) Information Center
         8) Troubleshooting
         ------
-        0) Update and Exit
+        0) {update}
 """)
 
 def primary_choice():
