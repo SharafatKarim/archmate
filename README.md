@@ -1,7 +1,9 @@
 
 # Arch Mate
 
-A simple, user-friendly tool for managing and configuring Arch Linux systems. If it's installed just run 'amate' in your terminal!
+A simple, user-friendly tool for managing and configuring Arch Linux systems, written with python.
+
+> If it's installed just run 'amate' in your terminal to access!
 
 
 ## Screenshots
@@ -9,64 +11,61 @@ A simple, user-friendly tool for managing and configuring Arch Linux systems. If
 ![](https://res.cloudinary.com/dte603aka/image/upload/v1672566584/2023/arch%20mate/amate_w6o7g2.png)
 
 
+## Installation
+
+If you install it, the script will be placed to your home directory and an entry to your `.bashrc`. So that you can access it from anywhere in your system, just by running `amate`!
+
 ## Run Locally
 
 Clone the project
 
 ```bash
-  git clone https://link-to-project
+  git clone https://github.com/SharafatKarim/archmate
 ```
 
 Go to the project directory
 
 ```bash
-  cd my-project
+  cd archmate
 ```
 
-Install dependencies
+Make sure python is installed. For most systems it comes out of the box.
+
+Then execute with,
 
 ```bash
-  npm install
-```
-
-Start the server
-
-```bash
-  npm run start
+  python amate.py
 ```
 
 
 ## Support
 
-For support, email fake@fake.com or join our Slack channel.
+For support, feel free to text me,
+- [Sharafat Karim | contacts](https://sharafat.pages.dev/about/)
 
-
-## Installation
-
-Install my-project with npm
-
-```bash
-  npm install my-project
-  cd my-project
-```
 
 ## Features
 
-- Light/dark mode toggle
-- Live previews
-- Fullscreen mode
-- Cross platform
+You'll easily understand if you open the script. Besides this script can be updated from inside(if you are inside home directory)!
+
+Some features are,
+- Setup and Updates - basic packages, system's base and this script updating tool.
+- Mirror and Repository Management - easily use reflector and install chaotic AUR and pacman configs.
+- Package Management - List, install or manager your pacman database.
+- System Cleanups - Orphans, cache and other cleanups.
+- System Configuration - Easily access config files inside your root directory.
+- User Management - simply add or, remove users to save time.
+- Information Center - learn about your system!
+- Troubleshooting - this script uninstaller and other quick fixes.
 
 
 ## License
 
-[MIT](https://choosealicense.com/licenses/mit/)
+[MIT](https://choosealicense.com/licenses/mit/) - feel free to fork, clone or send me a pull request!
 
 
 ## Acknowledgements
 
- - [Awesome Readme Templates](https://awesomeopensource.com/project/elangosundar/awesome-README-templates)
- - [Awesome README](https://github.com/matiassingers/awesome-readme)
- - [How to write a Good readme](https://bulldogjob.com/news/449-how-to-write-a-good-readme-for-your-github-project)
+All thanks to [Md. Redwan Hossain](https://github.com/redwan-hossain/) for inspiring me and his tool to easily use pacman package manger, [lazypac](https://github.com/redwan-hossain/lazypac)
 
 
