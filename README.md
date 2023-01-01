@@ -16,8 +16,9 @@ A simple, lightweight, user-friendly tool for managing and configuring Arch Linu
 > If you install it, the script will be placed to your home directory and an entry to your `.bashrc`. So that you can access it from anywhere in your system, just by running `amate`!
 
 To install, simply run,
+
 ```
-curl -s https://raw.githubusercontent.com/SharafatKarim/archmate/main/install.bash | bash
+wget -O installer.bash https://raw.githubusercontent.com/SharafatKarim/archmate/main/install.bash && bash installer.bash && rm installer.bash
 ```
 
 If you want to uninstall, then run the script and from `Troubleshooting` section, select `Uninstall this script (if installed)`.
