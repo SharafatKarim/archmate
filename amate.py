@@ -6,8 +6,7 @@
 
 # TODO LIST
 # 1) make a function for input error check
-# 2) make the update function work
-# 3) adjust the \n at the end between menu
+# 2) adjust the \n at the end between menu
 
 
 import os
@@ -17,11 +16,10 @@ import re # regular expressions
 import urllib.request
 import urllib.error
 
-from time import sleep #FIXME unusual
+from time import sleep
 
 # File location in the repository
-#FIXME: use Sharafat repo instead mine
-__URL_ADDRESS__ = "https://raw.githubusercontent.com/Pasqualecoder/archmate/main/amate.py" 
+__SCRIPT_URL__ = "https://raw.githubusercontent.com/Pasqualecoder/archmate/main/amate.py" 
 __CURRENT_VERSION__ = "2.0"
 
 
@@ -73,7 +71,7 @@ def compare_versions(version1, version2):
 # Makes an HTTP request to the __URL_VERSION__ (the VERSION file in the repository) and return its content
 def fetch_newer_version():
     try:
-        with urllib.request.urlopen(__URL_ADDRESS__) as response:
+        with urllib.request.urlopen(__SCRIPT_URL__) as response:
             status = int(response.status)
             if status == 200:
                 server_file = response.read()
@@ -113,7 +111,7 @@ def update_amate():
     print(f"Current version: {__CURRENT_VERSION__}")
     fetched = fetch_newer_version()
     if (fetched['version']) == -1:
-        print(f"Can't fetch the version from the server! (Probably a network error) {__URL_ADDRESS__}")
+        print(f"Can't fetch the version from the server! (Probably a network error) {__SCRIPT_URL__}")
     else:
         print(f"Fetched version: {fetched['version']}")
 
@@ -145,6 +143,7 @@ def update_amate():
 
 # -------------------------- CATEGORIES --------------------------------------
 
+
 def setup_and_update():
     menu_name = "Setup and Updates"
     setup_and_updates_commands = [
@@ -167,7 +166,7 @@ def setup_and_update():
         #choice out of range
         elif user_choice < 0 or user_choice > len(setup_and_updates_commands):
             print("Invalid choice!\nPlease try again ...")
-            sleep(0.5) #FIXME: sleep is kinda unsual
+            sleep(0.5)
         
         #finally run the chosen command
         else:
@@ -197,7 +196,7 @@ def system_cleanups():
         #choice out of range
         elif user_choice < 0 or user_choice > len(system_cleanups_commands):
             print("Invalid choice!\nPlease try again ...")
-            sleep(0.5) #FIXME: sleep is kinda unsual
+            sleep(0.5)
         
         #finally run the chosen command
         else:
@@ -228,7 +227,7 @@ def information_center():
         #choice out of range
         elif user_choice < 0 or user_choice > len(information_center_commands):
             print("Invalid choice!\nPlease try again ...")
-            sleep(0.5) #FIXME: sleep is kinda unsual
+            sleep(0.5)
         
         #finally run the chosen command
         else:
@@ -247,6 +246,31 @@ categories = [
     ["Information Center", information_center],
     #["Troubleshooting", troubleshooting]
     ["Update Arch Mate", update_amate]
+]
+
+# Category | Description | Command | requires input
+command_argument = ""
+all_commands = [
+    ["Setup and Updates", "Package Data Sync Only", "sudo pacman -Syy", False],
+    ["Setup and Updates", "Full System Update", "sudo pacman -Syyu", False],
+    ["Setup and Updates", "Refresh Keys", "sudo pacman-key --refresh-keys", False],
+    ["Setup and Updates", "Keyring Update/ Installation", "sudo pacman -Sy archlinux-keyring", False],
+    ["Setup and Updates", "Base Package Ensure", "sudo pacman -S --needed --noconfirm base base-devel wget man", False],
+    ["Setup and Updates", "Noto Sans (full dependency)", "sudo pacman -S --needed --noconfirm noto-fonts && sudo pacman -S --needed --noconfirm --asdeps noto-fonts-cjk  noto-fonts-emoji noto-fonts-extra", False],
+    ["Setup and Updates", "Chaotic AUR Installer", "wget -q -O chaotic-AUR-installer.bash https://raw.githubusercontent.com/SharafatKarim/chaotic-AUR-installer/main/install.bash && sudo bash chaotic-AUR-installer.bash && rm chaotic-AUR-installer.bash", False],
+    ["System Cleanups", "Remove orphan packages", "sudo -S pacman -R --noconfirm $(pacman -Qdtq)", False],
+    ["System Cleanups", "Pacman Cache Cleanup", "sudo pacman -Scc", False],
+    ["System Cleanups", "Home directory cache Size", "du -sh ~/.cache/", False],
+    ["System Cleanups", "Home directory cache Clean", "rm -rf ~/.cache/*", False],
+    ["System Cleanups", "Systemd jounal Cleanup", "sudo journalctl --vacuum-size=50M", False],
+    ["System Cleanups", "Filelight install/update", "pacman -S --noconfirm --needed filelight", False],
+    ["Information Center", "Operating System and Kernel", "uname -a && cat /etc/os-release", False],
+    ["Information Center", "CPU", "lscpu", False],
+    ["Information Center", "Disks and Partitions", "lsblk -a", False],
+    ["Information Center", "PCI devices and USB", "lspci", False],
+    ["Information Center", "Partition and File System", "sudo fsdisk -l", False],
+    ["Information Center", "DMI table", "sudo dmidecode", False],
+    ["Information Center", "IP address", "ip addr", False],
 ]
 
 # ----------------------------------------------------------------------------
@@ -295,7 +319,82 @@ def prompt_menu(menu_name, choices_list):
     return choice-1
 
 
+def secure_input_int(prompt, range):
+    value = 0
+    while True:
+        try:
+            value = int(input(prompt))
+            if not (0 <= value <= range+1):
+                print('Invalid input. Please try again.')
+            else:
+                break
+        except ValueError:
+            print('Invalid input. Please try again.')
+    return value
+
+
+def secure_input_string(prompt):
+    value = ""
+    while True:
+        try:
+            value = input(prompt)
+            if value != '':
+                break
+            else:
+                print('Invalid input. Please try again')
+        except ValueError:
+                print('Invalid input. Please try again')
+    return value
+
+
+    
+def sub_menu(category: str):
+    category_command = [row for row in all_commands if row[0] == category]
+    print(category_command)
+    
+
+def main_menu():
+    # take categories
+    categories = list([line[0] for line in all_commands])
+    unique_elements = []
+    for element in categories:
+        if element not in unique_elements:
+            unique_elements.append(element)
+    categories = unique_elements
+    print(categories)
+    n_categories = len(categories)
+    updater_index = n_categories+1
+    
+    while True:
+        menu_formatter("Main Menu", categories, True)
+        chosen_category = secure_input_int("Your choice ->", n_categories)
+        if chosen_category == 0:
+            break
+        elif chosen_category == updater_index:
+            # TODO run update
+            # RUN UPDATE
+            print("RUN UPDATE")
+        else:
+            sub_menu(categories[chosen_category-1])
+
+
+        
+
+
+def menu_formatter(title, list, exit: bool):
+    print(title)
+    print("------")
+    for i in range(len(list)):
+        print(f"{i+1}) {list[i]}")
+    print("------")
+    if exit:
+        print(f"{len(list)+1}) Update Arch Mate")
+        print("0) Exit")
+    else:
+        print("0) Back")
+
+
 if __name__ == "__main__":
     welcome_screen()
-    primary_menu()
+    main_menu()
 
