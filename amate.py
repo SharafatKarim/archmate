@@ -12,12 +12,17 @@
 
 import os
 import re # regular expressions
+
+# for internet connection
+import urllib.request
+import urllib.error
+
 from time import sleep #FIXME unusual
 
-# Version file location in the repository
+# File location in the repository
 #FIXME: use Sharafat repo instead mine
-__URL_VERSION__ = "https://raw.githubusercontent.com/Pasqualecoder/archmate/main/VERSION" 
-__CURRENT_VERSION__ = "1.0"
+__URL_ADDRESS__ = "https://raw.githubusercontent.com/Pasqualecoder/archmate/main/amate.py" 
+__CURRENT_VERSION__ = "2.0"
 
 
 
@@ -67,40 +72,56 @@ def compare_versions(version1, version2):
 
 # Makes an HTTP request to the __URL_VERSION__ (the VERSION file in the repository) and return its content
 def fetch_newer_version():
-    import urllib.request
-    with urllib.request.urlopen(__URL_VERSION__) as response:
-        status = int(response.status)
-        if status == 200:
-            fetched_version = response.read()
-            # CLEANUP the string
-            fetched_version = fetched_version.decode('utf-8')
-            return fetched_version
-        else:
-            return -1
+    try:
+        with urllib.request.urlopen(__URL_ADDRESS__) as response:
+            status = int(response.status)
+            if status == 200:
+                server_file = response.read()
+                # CLEANUP the file
+                server_file = server_file.decode('utf-8')
+
+                # find the version in the new file
+                new_file = server_file.split('\n') # whole file
+                new_version = ""
+                for i in new_file:
+                    if i[0:19] == "__CURRENT_VERSION__":
+                        new_version = i.split('"')[1] # gets the string
+                        break # once found there's no need to keep seearching 
+                return {'file': server_file, 'version': new_version} 
+            else:
+                return -1
+    except (urllib.error.HTTPError, urllib.error.URLError):
+        return -1
 
 
 # Effectly downloads the script from repository
-def run_update():
-    #FIXME: test me out. Not sure of how I work
-    #if os.getcwd() == os.getenv("HOME"):
-    #    os.system('curl -s --output "$PWD/amate.py" "https://raw.githubusercontent.com/SharafatKarim/archmate/main/amate.py"')
-    print("Update finished. Restart the app. (NOT REALLY YET)")
+def run_update(contents):
+    # location of this file
+    script_directory = os.path.dirname(os.path.realpath(__file__))
+    script_file = os.path.basename(__file__)
+    script_path = os.path.join(script_directory, script_file)
+    absolute_path = os.path.abspath(script_path)
+    
+    with open(absolute_path,'w') as f:
+        for i in contents:
+            f.write(i)
+    print("Update finished. Restart the app")
 
 
 # Shows the current version, grabs from the web the new version, then choose if run the update or no
 def update_amate():
     print(f"Current version: {__CURRENT_VERSION__}")
-    fetched_version = fetch_newer_version()
-    if fetched_version == -1:
-        print(f"Can't fetch the version from the server! (Probably a network error) {__URL_VERSION__}")
+    fetched = fetch_newer_version()
+    if (fetched['version']) == -1:
+        print(f"Can't fetch the version from the server! (Probably a network error) {__URL_ADDRESS__}")
     else:
-        print(f"Fetched version: {fetched_version}")
+        print(f"Fetched version: {fetched['version']}")
 
-        comparisone_result = compare_versions(__CURRENT_VERSION__, fetched_version)
+        comparisone_result = compare_versions(__CURRENT_VERSION__, fetched['version'])
 
         # currently is older
         if comparisone_result == -1:
-            run_update()
+            run_update(fetched['file'])
             exit()
             
         # currently is newer (WEIRD CASE)
@@ -110,13 +131,14 @@ def update_amate():
             print("Are you sure you want to download the version from the repository?")
             response = input("(y/N)>")
             if response.lower() in ['y', 'yes', 'YES', 'Yes']:
-                run_update()
+                run_update(fetched['file'])
                 exit()
 
         # currently is up-to-date'
         elif comparisone_result == 0:
             print("You are already up-to-date")
             print("There is nothing to do")
+
 
 # ----------------------------------------------------------------------------
 
