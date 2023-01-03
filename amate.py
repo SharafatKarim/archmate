@@ -6,6 +6,84 @@
 import os
 from time import sleep
 
+# ----------------- Developer Variables -----------------------------
+# If you are a developer and want to contribute, then change two Variables as needed.
+# Set `__URL_ADDRESS__` to the raw file of your `amate.py`
+# Set `__CURRENT_VERSION__` to a higher number to avoid conflicts.
+__URL_ADDRESS__     = "https://raw.githubusercontent.com/SharafatKarim/archmate/main/amate.py"
+__CURRENT_VERSION__ = "2.0"
+# -------------------------------------------------------------------
+
+# --------------------- Update Hook ---------------------------------
+def compare_versions(current, new):
+    new = new.split('\n')
+
+    for i in new:
+        if i[0:19] == "__CURRENT_VERSION__":
+            new = i.split('"')[1]
+
+    print("Updated version:", new)
+    print("-----")
+
+    if float(new) > float(current):
+        return True
+    elif float(new) < float(current):
+        print("Ops... This is kinda weird.\nYou are currently running a newer version of Arch Mate.\nProbably you made some changes to the program!")
+        print("The update is up to you. You will lose the changes you have done\n")
+        print("Are you sure you want to download the version from the repository?")
+
+        while True:
+            response = input("(y/N) -> ")
+            if response.lower() in ['y', 'Y', 'yes', 'YES', 'Yes']:
+                return True
+            elif response.lower() in ['n', 'N', 'no', 'NO', 'No']:
+                exit()
+            else:
+                print("Please select either 'y' or 'n'")
+    else:
+        return False
+
+
+# Makes an HTTP request to the amate.py from repo and return its content
+def fetch_newer_version():
+    import urllib.request
+    with urllib.request.urlopen(__URL_ADDRESS__) as response:
+        status = int(response.status)
+        if status == 200:
+            fetched_version = response.read()
+            fetched_version = fetched_version.decode('utf-8')
+            return fetched_version
+        else:
+            return -1
+
+
+# Re-download not required!
+def run_update(contents):
+    user = os.getenv('USER')
+    with open(f'/home/{user}/amate.py','w') as f:
+        for i in contents:
+            f.write(i)
+    print("Update finished.")
+
+
+# Shows the current version, grabs from the web the new version, then choose if run the update or no
+def update_amate():
+    print(f"Current version: {__CURRENT_VERSION__}")
+
+    import urllib.error
+    try:
+        fetched_version = fetch_newer_version()
+    except (urllib.error.HTTPError, urllib.error.URLError) :
+        print("Can't fetch the version from the server! (Probably a network error)")
+        exit()
+
+    if compare_versions(__CURRENT_VERSION__, fetched_version):
+        run_update(fetched_version)
+    else:
+        print("You are already up-to-date")
+        print("There is nothing to do")
+# -------------------------------------------------------------------
+
 # -------------------- Command Class --------------------------------
 class Command:
     def __init__(self, category: str, description: str, command: str, prompt: str) -> None:
@@ -196,9 +274,7 @@ def main_menu():
         if chosen_category == -1:
             break
         elif chosen_category == updater_index:
-            # TODO run update
-            # RUN UPDATE
-            print("RUN UPDATE")
+            update_amate()
         else:
             sub_menu(categories[chosen_category])
 
