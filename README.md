@@ -72,6 +72,7 @@ Some features are,
 It's lightweight, no third party modules, and you can understand easily with just basic python knowledge! Feel free to send me merge request or, directory knock me!
 
 Special thanks to,
+
 [![Pasqualecoder's Profilator](https://profilator.deno.dev/Pasqualecoder?v=1.0.0.alpha.4)](https://github.com/Pasqualecoder)
 
 ## Troubleshooting
