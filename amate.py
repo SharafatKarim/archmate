@@ -21,8 +21,6 @@ from time import sleep
 __SCRIPT_URL__ = "https://raw.githubusercontent.com/Pasqualecoder/archmate/main/amate.py" 
 __CURRENT_VERSION__ = "2.0"
 
-__TEXT_EDITOR__ = "nano"
-
 # Insert this in the command string. It will be replaced with the actual argument
 argument_identifier = "__AMATE_ARGUMENT__"
 
@@ -70,11 +68,11 @@ all_commands = [
     Command("Setup and Updates", "Chaotic AUR Installer", "wget -q -O chaotic-AUR-installer.bash https://raw.githubusercontent.com/SharafatKarim/chaotic-AUR-installer/main/install.bash && sudo bash chaotic-AUR-installer.bash && rm chaotic-AUR-installer.bash", ""),
 
     Command("Mirror and Repository Management", "Print current mirrors", "cat /etc/pacman.d/mirrorlist", ""),
-    Command("Mirror and Repository Management", "Mirrorlist Edit", f"sudo {__TEXT_EDITOR__} /etc/pacman.d/mirrorlist", ""),
+    Command("Mirror and Repository Management", "Mirrorlist Edit", "sudo ${EDITOR:-nano} /etc/pacman.d/mirrorlist", ""),
     Command("Mirror and Repository Management", "Reflector Install or Update", "sudo pacman -S --needed --noconfirm reflector", ""),
     Command("Mirror and Repository Management", "Reflector Mirror Setup for Specific Country", f"sudo reflector -c {argument_identifier} --save /etc/pacman.d/mirrorlist", "Your country name or code -> "),
     Command("Mirror and Repository Management", "List all Repository", "grep '^\[.*\]' /etc/pacman.conf | grep -v 'options' | sed 's/\[//g' | sed 's/\]//g'", ""),
-    Command("Mirror and Repository Management", "Pacman Configuration", f"sudo {__TEXT_EDITOR__} /etc/pacman.conf", ""),
+    Command("Mirror and Repository Management", "Pacman Configuration", "sudo ${EDITOR:-nano} /etc/pacman.conf", ""),
     Command("Mirror and Repository Management", "Chaotic AUR Installer", "wget -q -O chaotic-AUR-installer.bash https://raw.githubusercontent.com/SharafatKarim/chaotic-AUR-installer/main/install.bash && sudo bash chaotic-AUR-installer.bash && rm chaotic-AUR-installer.bash", ""), # FIXME: AGAIN?!
     
     Command("Package Management", "Install packages", f"sudo pacman -S --needed --noconfirm {argument_identifier}", "Enter your package names (for multiple value, separate with space)\n-> "),
