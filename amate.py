@@ -154,7 +154,7 @@ all_commands = [
     Command("Information Center", "IP address", "ip addr", ""),
 
     #TODO: uninstall script
-    Command("Troubleshooting", "Uninstall this script (if installed)", "", ""),
+    Command("Troubleshooting", "Uninstall this script (if installed)", "curl -s https://raw.githubusercontent.com/SharafatKarim/archmate/main/uninstall.py > .amate-uninstaller.py && python .amate-uninstaller.py && rm .amate-uninstaller.py", ""),
     Command("Troubleshooting", "Manjaro Bangla font issue", "curl -s https://raw.githubusercontent.com/SharafatKarim/Manjaro-Bangla-Font-Fix/main/main.sh | bash", ""),
 ]
 ###############################################################################################
