@@ -26,11 +26,10 @@ __CURRENT_VERSION__ = "2.0"
 argument_identifier = "__AMATE_ARGUMENT__"
 
 class Command:
-    def __init__(self, category: str, description: str, command: str, needs_input: bool, prompt: str) -> None:
+    def __init__(self, category: str, description: str, command: str, prompt: str) -> None:
         self.category = category
         self.description = description
         self.command = command
-        self.needs_input = needs_input
         self.prompt = prompt
 
     def get_category(self) -> str:
@@ -51,52 +50,58 @@ class Command:
     def set_command(self, command: str) -> None:
         self.command = command
 
-    def get_needs_input(self) -> bool:
-        return self.needs_input
-
-    def set_needs_input(self, needs_input: bool) -> None:
-        self.needs_input = needs_input
-
     def get_prompt(self) -> str:
         return self.prompt
 
     def set_prompt(self, prompt: str) -> None:
         self.prompt = prompt
 
+        
+classic_ask = "Your Choice -> "
+
 all_commands = [
-    Command("Setup and Updates", "Package Data Sync Only", "sudo pacman -Syy", False, ""),
-    Command("Setup and Updates", "Full System Update", "sudo pacman -Syyu", False, ""),
-    Command("Setup and Updates", "Refresh Keys", "sudo pacman-key --refresh-keys", False, ""),
-    Command("Setup and Updates", "Keyring Update/ Installation", "sudo pacman -Sy archlinux-keyring", False, ""),
-    Command("Setup and Updates", "Base Package Ensure", "sudo pacman -S --needed --noconfirm base base-devel wget man", False, ""),
-    Command("Setup and Updates", "Noto Sans (full dependency)", "sudo pacman -S --needed --noconfirm noto-fonts && sudo pacman -S --needed --noconfirm --asdeps noto-fonts-cjk  noto-fonts-emoji noto-fonts-extra", False, ""),
-    Command("Setup and Updates", "Chaotic AUR Installer", "wget -q -O chaotic-AUR-installer.bash https://raw.githubusercontent.com/SharafatKarim/chaotic-AUR-installer/main/install.bash && sudo bash chaotic-AUR-installer.bash && rm chaotic-AUR-installer.bash", False, ""),
+    Command("Setup and Updates", "Package Data Sync Only", "sudo pacman -Syy", ""),
+    Command("Setup and Updates", "Full System Update", "sudo pacman -Syyu", ""),
+    Command("Setup and Updates", "Refresh Keys", "sudo pacman-key --refresh-keys", ""),
+    Command("Setup and Updates", "Keyring Update/ Installation", "sudo pacman -Sy archlinux-keyring", ""),
+    Command("Setup and Updates", "Base Package Ensure", "sudo pacman -S --needed --noconfirm base base-devel wget man", ""),
+    Command("Setup and Updates", "Noto Sans (full dependency)", "sudo pacman -S --needed --noconfirm noto-fonts && sudo pacman -S --needed --noconfirm --asdeps noto-fonts-cjk  noto-fonts-emoji noto-fonts-extra", ""),
+    Command("Setup and Updates", "Chaotic AUR Installer", "wget -q -O chaotic-AUR-installer.bash https://raw.githubusercontent.com/SharafatKarim/chaotic-AUR-installer/main/install.bash && sudo bash chaotic-AUR-installer.bash && rm chaotic-AUR-installer.bash", ""),
 
-    Command("Mirror and Repository Management", "Print current mirrors", "cat /etc/pacman.d/mirrorlist", False, ""),
-    Command("Mirror and Repository Management", "Mirrorlist Edit", "sudo $EDITOR /etc/pacman.d/mirrorlist", False, ""),
-    Command("Mirror and Repository Management", "Reflector Install or Update", "sudo pacman -S --needed --noconfirm reflector", False, ""),
-    Command("Mirror and Repository Management", "Reflector Mirror Setup for Specific Country", f"sudo reflector -c {argument_identifier} --save /etc/pacman.d/mirrorlist", True, "Your country name or code -> "),
-    Command("Mirror and Repository Management", "List all Repository", "grep '^\[.*\]' /etc/pacman.conf | grep -v 'options' | sed 's/\[//g' | sed 's/\]//g'", False, ""),
-    Command("Mirror and Repository Management", "Pacman Configuration (make sure you have set $EDITOR environment variable)", "sudo $EDITOR /etc/pacman.conf", False, ""),
-    Command("Mirror and Repository Management", "Chaotic AUR Installer", "wget -q -O chaotic-AUR-installer.bash https://raw.githubusercontent.com/SharafatKarim/chaotic-AUR-installer/main/install.bash && sudo bash chaotic-AUR-installer.bash && rm chaotic-AUR-installer.bash", False, ""), # FIXME: AGAIN?!
+    Command("Mirror and Repository Management", "Print current mirrors", "cat /etc/pacman.d/mirrorlist", ""),
+    Command("Mirror and Repository Management", "Mirrorlist Edit", "sudo $EDITOR /etc/pacman.d/mirrorlist", ""),
+    Command("Mirror and Repository Management", "Reflector Install or Update", "sudo pacman -S --needed --noconfirm reflector", ""),
+    Command("Mirror and Repository Management", "Reflector Mirror Setup for Specific Country", f"sudo reflector -c {argument_identifier} --save /etc/pacman.d/mirrorlist", "Your country name or code -> "),
+    Command("Mirror and Repository Management", "List all Repository", "grep '^\[.*\]' /etc/pacman.conf | grep -v 'options' | sed 's/\[//g' | sed 's/\]//g'", ""),
+    Command("Mirror and Repository Management", "Pacman Configuration (make sure you have set $EDITOR environment variable)", "sudo $EDITOR /etc/pacman.conf", ""),
+    Command("Mirror and Repository Management", "Chaotic AUR Installer", "wget -q -O chaotic-AUR-installer.bash https://raw.githubusercontent.com/SharafatKarim/chaotic-AUR-installer/main/install.bash && sudo bash chaotic-AUR-installer.bash && rm chaotic-AUR-installer.bash", ""), # FIXME: AGAIN?!
     
-    Command("System Cleanups", "Remove orphan packages", "sudo -S pacman -R --noconfirm $(pacman -Qdtq)", False, ""),
-    Command("System Cleanups", "Pacman Cache Cleanup", "sudo pacman -Scc", False, ""),
-    Command("System Cleanups", "Home directory cache Size", "du -sh ~/.cache/", False, ""),
-    Command("System Cleanups", "Home directory cache Clean", "rm -rf ~/.cache/*", False, ""),
-    Command("System Cleanups", "Systemd jounal Cleanup", "sudo journalctl --vacuum-size=50M", False, ""),
-    Command("System Cleanups", "Filelight install/update", "pacman -S --noconfirm --needed filelight", False, ""),
+    Command("Package Management", "Install packages", f"sudo pacman -S --needed --noconfirm {argument_identifier}", "Enter your package names (for multiple value, separate with space)\n-> "),
+    Command("Package Management", "Install packages as dependency", f"sudo pacman -S --needed --noconfirm --asdeps {argument_identifier}", "Enter your package names (for multiple value, separate with space)\n-> "),
+    Command("Package Management", "Uninstall packages", f"sudo pacman -Rns {argument_identifier}", "Enter your package names (for multiple value, separate with space)\n-> "),
+    Command("Package Management", "Search packages", f"sudo pacman -Ss {argument_identifier}", "Enter your package name\n-> "),
+    Command("Package Management", "DB lock remove", "sudo rm /var/lib/pacman/db.lck", ""),
+    Command("Package Management", "List system + explicit + dependency packages", "pacman -Q", ""),
+    Command("Package Management", "List system packages", "pacman -Qet", ""),
+    Command("Package Management", "List explicit packages", "pacman -Qe", ""),
+    Command("Package Management", "List orphan packages", "pacman -Qdt", ""),
+    
+    Command("System Cleanups", "Remove orphan packages", "sudo -S pacman -R --noconfirm $(pacman -Qdtq)", ""),
+    Command("System Cleanups", "Pacman Cache Cleanup", "sudo pacman -Scc", ""),
+    Command("System Cleanups", "Home directory cache Size", "du -sh ~/.cache/", ""),
+    Command("System Cleanups", "Home directory cache Clean", "rm -rf ~/.cache/*", ""),
+    Command("System Cleanups", "Systemd jounal Cleanup", "sudo journalctl --vacuum-size=50M", ""),
+    Command("System Cleanups", "Filelight install/update", "pacman -S --noconfirm --needed filelight", ""),
 
-    Command("Information Center", "Operating System and Kernel", "uname -a && cat /etc/os-release", False, ""),
-    Command("Information Center", "CPU", "lscpu", False, ""),
-    Command("Information Center", "Disks and Partitions", "lsblk -a", False, ""),
-    Command("Information Center", "PCI devices and USB", "lspci", False, ""),
-    Command("Information Center", "Partition and File System", "sudo fsdisk -l", False, ""),
-    Command("Information Center", "DMI table", "sudo dmidecode", False, ""),
-    Command("Information Center", "IP address", "ip addr", False, "")
+    Command("Information Center", "Operating System and Kernel", "uname -a && cat /etc/os-release", ""),
+    Command("Information Center", "CPU", "lscpu", ""),
+    Command("Information Center", "Disks and Partitions", "lsblk -a", ""),
+    Command("Information Center", "PCI devices and USB", "lspci", ""),
+    Command("Information Center", "Partition and File System", "sudo fsdisk -l", ""),
+    Command("Information Center", "DMI table", "sudo dmidecode", ""),
+    Command("Information Center", "IP address", "ip addr", "")
 ]
 
-classic_ask = "Your Choice -> "
 
 
 def cowsay(message):
@@ -177,7 +182,7 @@ def sub_menu(category: str):
         selected_command = secure_input_int(classic_ask, len(category_commands))
         if selected_command == -1:
             break
-        if category_commands[selected_command].needs_input:
+        if category_commands[selected_command].prompt != "":
             # Asks the user for the additional input
             command_argument = secure_input_string(category_commands[selected_command].prompt)
             # Compose the command using the new input
