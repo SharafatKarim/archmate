@@ -1,63 +1,26 @@
 # Arch Mate - Arch Linux management and configuration tool
 # A simple, user-friendly tool for managing and configuring Arch Linux systems
 # If it's installed just run 'amate' in your terminal!
-
 # Description: "Arch Mate is a Python script designed to make it easier for users to manage and configure their Arch Linux systems. It provides a range of features, including package management, system configuration, and more, all within a user-friendly interface. With Arch Mate, you can easily maintain and optimize your Arch Linux system, saving time and effort."
 
-# TODO LIST
-# 2) adjust the \n at the end between menu
-
-
 import os
-import re # regular expressions
-
-# for internet connection
-import urllib.request
-import urllib.error
-
 from time import sleep
 
-# File location in the repository
-__SCRIPT_URL__ = "https://raw.githubusercontent.com/Pasqualecoder/archmate/main/amate.py" 
-__CURRENT_VERSION__ = "2.0"
-
-# Insert this in the command string. It will be replaced with the actual argument
-argument_identifier = "__AMATE_ARGUMENT__"
-
+# -------------------- Command Class --------------------------------
 class Command:
     def __init__(self, category: str, description: str, command: str, prompt: str) -> None:
         self.category = category
         self.description = description
         self.command = command
         self.prompt = prompt
-
-    def get_category(self) -> str:
-        return self.category
-
-    def set_category(self, category: str) -> None:
-        self.category = category
-
-    def get_description(self) -> str:
-        return self.description
-
-    def set_description(self, description: str) -> None:
-        self.description = description
-
-    def get_command(self) -> str:
-        return self.command
-
-    def set_command(self, command: str) -> None:
-        self.command = command
-
-    def get_prompt(self) -> str:
-        return self.prompt
-
-    def set_prompt(self, prompt: str) -> None:
-        self.prompt = prompt
-
+# -------------------------------------------------------------------
         
+# Insert this in the command string. It will be replaced with the actual argument
+argument_identifier = "__AMATE_ARGUMENT__"
 classic_ask = "Your Choice -> "
 
+###############################################################################################
+# Insert here new commands
 all_commands = [
     Command("Setup and Updates", "Package Data Sync Only", "sudo pacman -Syy", ""),
     Command("Setup and Updates", "Full System Update", "sudo pacman -Syyu", ""),
@@ -73,7 +36,6 @@ all_commands = [
     Command("Mirror and Repository Management", "Reflector Mirror Setup for Specific Country", f"sudo reflector -c {argument_identifier} --save /etc/pacman.d/mirrorlist", "Your country name or code -> "),
     Command("Mirror and Repository Management", "List all Repository", "grep '^\[.*\]' /etc/pacman.conf | grep -v 'options' | sed 's/\[//g' | sed 's/\]//g'", ""),
     Command("Mirror and Repository Management", "Pacman Configuration", "sudo ${EDITOR:-nano} /etc/pacman.conf", ""),
-    Command("Mirror and Repository Management", "Chaotic AUR Installer", "wget -q -O chaotic-AUR-installer.bash https://raw.githubusercontent.com/SharafatKarim/chaotic-AUR-installer/main/install.bash && sudo bash chaotic-AUR-installer.bash && rm chaotic-AUR-installer.bash", ""), # FIXME: AGAIN?!
     
     Command("Package Management", "Install packages", f"sudo pacman -S --needed --noconfirm {argument_identifier}", "Enter your package names (for multiple value, separate with space)\n-> "),
     Command("Package Management", "Install packages as dependency", f"sudo pacman -S --needed --noconfirm --asdeps {argument_identifier}", "Enter your package names (for multiple value, separate with space)\n-> "),
@@ -92,17 +54,35 @@ all_commands = [
     Command("System Cleanups", "Systemd jounal Cleanup", "sudo journalctl --vacuum-size=50M", ""),
     Command("System Cleanups", "Filelight install/update", "pacman -S --noconfirm --needed filelight", ""),
 
+    Command("System Configuration", "GRUB Configuration", "sudo ${EDITOR:-nano} /etc/default/grub", ""),
+    Command("System Configuration", "GRUB Update", "grub-mkconfig -o /boot/grub/grub.cfg", ""),
+    Command("System Configuration", "locale-gen file", "sudo ${EDITOR:-nano} /etc/locale.gen", ""),
+    Command("System Configuration", "locale-gen update", "sudo locale-gen", ""),
+
+    Command("User Management", "List Users", "cat /etc/passwd | grep /home/", ""),
+    Command("User Management", "List Active Users", "who", ""),
+    Command("User Management", "Add User (wheel)", f"sudo useradd -m -G wheel {argument_identifier}", "Enter your username -> "),
+    Command("User Management", "Add User without group", f"sudo useradd -m {argument_identifier}", "Enter your username -> "),
+    Command("User Management", "Remove User including home data", f"sudo userdel -r {argument_identifier}", "Enter your username -> "),
+    Command("User Management", "Remove User keeping home data", f"sudo userdel {argument_identifier}", "Enter your username -> "),
+    Command("User Management", "VISUDO - users permission", "sudo EDITOR=$EDITOR visudo", ""),
+
     Command("Information Center", "Operating System and Kernel", "uname -a && cat /etc/os-release", ""),
     Command("Information Center", "CPU", "lscpu", ""),
     Command("Information Center", "Disks and Partitions", "lsblk -a", ""),
     Command("Information Center", "PCI devices and USB", "lspci", ""),
     Command("Information Center", "Partition and File System", "sudo fsdisk -l", ""),
     Command("Information Center", "DMI table", "sudo dmidecode", ""),
-    Command("Information Center", "IP address", "ip addr", "")
+    Command("Information Center", "IP address", "ip addr", ""),
+
+    #TODO: uninstall script
+    Command("Troubleshooting", "Uninstall this script (if installed)", "", ""),
+    Command("Troubleshooting", "Manjaro Bangla font issue", "curl -s https://raw.githubusercontent.com/SharafatKarim/Manjaro-Bangla-Font-Fix/main/main.sh | bash", ""),
 ]
+###############################################################################################
 
 
-
+# ------------------------ Welcome Screen -------------------------------------------
 def cowsay(message):
     lines = message.split('\n')
     width = max(len(line) for line in lines)
@@ -124,8 +104,10 @@ def cowsay(message):
 def welcome_screen():
     message = "Welcome to ArchMate!\nIt'll help you to configure and manage\nyour system easily and efficiently!"
     print(cowsay(message))
+# -------------------------------------------------------------------
 
-
+# ---------------------- I/O ----------------------------------------
+# parameters: menu title, list to be printend, if the 0) option is exit
 def menu_formatter(title, list, exit: bool):
     are_commands = True if type(list[0]) == Command else False
     
@@ -144,6 +126,7 @@ def menu_formatter(title, list, exit: bool):
         print("0) Back")
 
 
+# Reads only integers in a given range. Asks again if invalid
 def secure_input_int(prompt, range):
     value = 0
     while True:
@@ -153,11 +136,13 @@ def secure_input_int(prompt, range):
                 break
             else:
                 print('Invalid input. Please try again.')
+                sleep(0.5)
         except ValueError:
             print('Invalid input. Please try again.')
+            sleep(0.5)
     return value
 
-
+# Reads only valid strings. Asks again if invalid
 def secure_input_string(prompt):
     value = ""
     while True:
@@ -167,16 +152,19 @@ def secure_input_string(prompt):
                 break
             else:
                 print('Invalid input. Please try again')
+                sleep(0.5)
         except ValueError:
                 print('Invalid input. Please try again')
+                sleep(0.5)
     return value
+# -------------------------------------------------------------------
 
 
-    
 def sub_menu(category: str):
     # grab all commands of the chosen category
     category_commands = [cmd for cmd in all_commands if cmd.category == category]
     while True:
+        print("\n")
         menu_formatter(category, category_commands, False)
         selected_command = secure_input_int(classic_ask, len(category_commands))
         if selected_command == -1:
@@ -187,7 +175,7 @@ def sub_menu(category: str):
             # Compose the command using the new input
             category_commands[selected_command].command = category_commands[selected_command].command.replace(argument_identifier, command_argument)
         os.system(category_commands[selected_command].command)
-        print()
+        print("\n")
     
 
 def main_menu():
@@ -202,6 +190,7 @@ def main_menu():
     updater_index = n_categories
     
     while True:
+        print("\n")
         menu_formatter("Main Menu", categories, True)
         chosen_category = secure_input_int(classic_ask, n_categories+1)
         if chosen_category == -1:
