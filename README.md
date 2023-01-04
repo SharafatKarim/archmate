@@ -3,7 +3,9 @@
 
 A simple, lightweight, user-friendly tool for managing and configuring Arch Linux systems, written with python.
 
-![archmate](https://socialify.git.ci/SharafatKarim/archmate/image?description=1&font=Bitter&forks=1&issues=1&language=1&name=1&pattern=Circuit%20Board&pulls=1&stargazers=1&theme=Auto)
+Arch Mate is a Python script designed to make it easier for users to manage and configure their Arch Linux systems. It provides a range of features, including package management, system configuration, and more, all within a user-friendly interface. With Arch Mate, you can easily maintain and optimize your Arch Linux system, saving time and effort.
+
+![archmate](https://socialify.git.ci/SharafatKarim/archmate/image?description=1&descriptionEditable=A%20simple%20tool%20for%20managing%20Arch%20Linux%20systems%2C%20with%20python&font=Bitter&forks=1&issues=1&language=1&name=1&pattern=Circuit%20Board&pulls=1&stargazers=1&theme=Auto)
 
 > If it's installed just run 'amate' in your terminal to access!
 
