@@ -3,6 +3,8 @@
 
 A simple, lightweight, user-friendly tool for managing and configuring Arch Linux systems, written with python.
 
+![archmate](https://socialify.git.ci/SharafatKarim/archmate/image?description=1&font=Bitter&forks=1&issues=1&language=1&name=1&pattern=Circuit%20Board&pulls=1&stargazers=1&theme=Auto)
+
 > If it's installed just run 'amate' in your terminal to access!
 
 
