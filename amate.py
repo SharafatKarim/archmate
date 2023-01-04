@@ -11,7 +11,7 @@ from time import sleep
 # Set `__URL_ADDRESS__` to the raw file of your `amate.py`
 # Set `__CURRENT_VERSION__` to a higher number to avoid conflicts.
 __URL_ADDRESS__     = "https://raw.githubusercontent.com/SharafatKarim/archmate/main/amate.py"
-__CURRENT_VERSION__ = "2.0"
+__CURRENT_VERSION__ = "2.1"
 # -------------------------------------------------------------------
 
 # --------------------- Update Hook ---------------------------------
@@ -82,6 +82,13 @@ def update_amate():
     else:
         print("You are already up-to-date")
         print("There is nothing to do")
+
+def check_amate_installed():
+    user = os.getenv('USER')
+    if os.path.isfile(f'/home/{user}/amate.py'):
+        return True
+    else:
+        return False
 # -------------------------------------------------------------------
 
 # -------------------- Command Class --------------------------------
@@ -197,7 +204,8 @@ def menu_formatter(title, list, exit: bool):
             print(f"{i+1}) {list[i]}")
     print("------")
     if exit:
-        print(f"{len(list)+1}) Update Arch Mate")
+        if check_amate_installed():
+            print(f"{len(list)+1}) Update Arch Mate")
         print("0) Exit")
     else:
         print("0) Back")
@@ -269,7 +277,10 @@ def main_menu():
     while True:
         print("\n")
         menu_formatter("Main Menu", categories, True)
-        chosen_category = secure_input_int(classic_ask, n_categories+1)
+        if check_amate_installed():
+            chosen_category = secure_input_int(classic_ask, n_categories+1)
+        else:
+            chosen_category = secure_input_int(classic_ask, n_categories)
         if chosen_category == -1:
             break
         elif chosen_category == updater_index:
