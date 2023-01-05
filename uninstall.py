@@ -24,3 +24,6 @@ with open(f'/home/{user}/.bashrc','r') as f:
                 continue
             w.write(i)
 os.system("mv ~/.bashrccopy ~/.bashrc")
+
+# exit
+exit()
