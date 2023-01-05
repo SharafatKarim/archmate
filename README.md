@@ -1,7 +1,7 @@
 
 # Arch Mate
 
-A simple, lightweight, user-friendly tool for managing and configuring Arch Linux systems, written with python.
+A simple, lightweight, user-friendly tool for managing and configuring Arch Linux systems, written in python.
 
 Arch Mate is a Python script designed to make it easier for users to manage and configure their Arch Linux systems. It provides a range of features, including package management, system configuration, and more, all within a user-friendly interface. With Arch Mate, you can easily maintain and optimize your Arch Linux system, saving time and effort.
 
