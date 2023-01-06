@@ -51,6 +51,11 @@ Then execute with,
   python amate.py
 ```
 
+If you want to install on your system, try,
+```bash
+makepkg -si --clean
+```
+`--clean` flag will get rid of unnecessary files.
 
 ## Support
 
