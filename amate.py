@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # Arch Mate - Arch Linux management and configuration tool
 # A simple, user-friendly tool for managing and configuring Arch Linux systems
 # If it's installed just run 'amate' in your terminal!
