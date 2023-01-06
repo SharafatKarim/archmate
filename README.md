@@ -1,4 +1,3 @@
-
 # Arch Mate
 
 A simple, lightweight, user-friendly tool for managing and configuring Arch Linux systems, written in python.

@@ -78,6 +78,8 @@ if [ -f ~/.bashrc ]
 fi
 }
 
+install_to_user()
+{
 install_script
 echo ""
 echo -e "Script download - ${Green}Success${NC}"
@@ -88,6 +90,27 @@ while true; do
     case $yn in
         [Yy]* ) bashrc_search; exit;;
         [Nn]* ) ask_to_set_manually; exit;;
+        * ) echo -e "Please answer yes or no. Press y for yes or n for no. ";;
+    esac
+done
+}
+
+makepkg_install()
+{
+#     curl -s https://raw.githubusercontent.com/SharafatKarim/archmate/main/PKGBUILD | makepkg -si
+
+    git clone https://github.com/SharafatKarim/archmate
+    cd archmate
+    makepkg -sif --clean
+}
+
+while true; do
+    read -p "Do you want to install to the whole system (Arch Linux)?
+(otherwise it'll be installed to only your user without root)
+-> (yes or no) " yn
+    case $yn in
+        [Yy]* ) makepkg_install; exit;;
+        [Nn]* ) install_to_user; exit;;
         * ) echo -e "Please answer yes or no. Press y for yes or n for no. ";;
     esac
 done
