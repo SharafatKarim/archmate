@@ -1,5 +1,6 @@
 import os
 
+
 # system's username grab
 user = os.getenv('USER')
 
@@ -24,6 +25,9 @@ with open(f'/home/{user}/.bashrc','r') as f:
                 continue
             w.write(i)
 os.system("mv ~/.bashrccopy ~/.bashrc")
+
+# os.system("sudo pacman -R --noconfirm archmate")
+os.system("pacman -Q archmate |& grep -q 'not found' && echo 'Not installed to the system' || sudo pacman -R --noconfirm archmate")
 
 # exit
 exit()

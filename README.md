@@ -24,7 +24,11 @@ To install, simply run,
 curl -s https://raw.githubusercontent.com/SharafatKarim/archmate/main/install.bash > installer.bash && bash installer.bash && rm installer.bash
 ```
 
-If you want to uninstall, then run the script and from `Troubleshooting` section, select `Uninstall this script (if installed)`.
+While installation, you can both install it into your system (pacman pacakge) or, your user (`~/`). If you later want to uninstall from your system, you can do it with,
+
+```bash
+sudo pacman -R archmate
+```
 
 ## Run Locally
 
