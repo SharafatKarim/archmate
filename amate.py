@@ -141,7 +141,7 @@ all_commands = [
     Command("System Cleanups", "Filelight install/update", "pacman -S --noconfirm --needed filelight", ""),
 
     Command("System Configuration", "GRUB Configuration", "sudo ${EDITOR:-nano} /etc/default/grub", ""),
-    Command("System Configuration", "GRUB Update", "grub-mkconfig -o /boot/grub/grub.cfg", ""),
+    Command("System Configuration", "GRUB Update", "sudo grub-mkconfig -o /boot/grub/grub.cfg", ""),
     Command("System Configuration", "locale-gen file", "sudo ${EDITOR:-nano} /etc/locale.gen", ""),
     Command("System Configuration", "locale-gen update", "sudo locale-gen", ""),
 
