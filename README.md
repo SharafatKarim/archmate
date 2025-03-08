@@ -85,7 +85,7 @@ It's lightweight, no third party modules, and you can understand easily with jus
 
 Special thanks to,
 
-[![Pasqualecoder's Profilator](https://profilator.deno.dev/Pasqualecoder?v=1.0.0.alpha.4)](https://github.com/Pasqualecoder)
+[![PasqualeMuraca's Profilator](https://profilator.deno.dev/PasqualeMuraca?v=1.0.0.alpha.4)](https://github.com/PasqualeMuraca)
 
 ## Troubleshooting
 
